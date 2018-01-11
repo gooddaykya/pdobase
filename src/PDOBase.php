@@ -35,7 +35,11 @@
 
             $lastInsertId = $this->db->lastInsertId();
 
-            return $lastInsertId;
+            return function($fetchMethod) use($stmt, $lastInsertId)
+            {
+                return $fetchMethod === 'lastInsertId' ? 
+                    $lastInsertId : $stmt->fetchMethod();
+            };
         }
 
         private function bindParam($stmt)
