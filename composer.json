@@ -15,7 +15,8 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "gooddaykya\\components\\": "src/"
+            "gooddaykya\\components\\": "src/",
+            "gooddaykya\\tests\\": "tests/"
         }
     }
 }
