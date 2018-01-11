@@ -79,7 +79,7 @@
                 ),
                 array(
                     'SELECT textval FROM const_table WHERE val = :val AND id = :id',
-                    array(':val' => 1, ':id' => 2)
+                    array(':val' => 1, ':id' => 2),
                     'fetchColumn',
                     'one'
                 )
