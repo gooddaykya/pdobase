@@ -60,28 +60,22 @@
         {
             return array(
                 array(
-                    'SELECT COUNT(id) FROM const_table',
+                    'SELECT COUNT(id) AS res FROM const_table',
                     array(),
                     'fetch',
                     6
                 ),
                 array(
-                    'SELECT val FROM const_table WHERE id = :id',
+                    'SELECT val AS res FROM const_table WHERE id = :id',
                     array(':id' => 3),
                     'fetch',
                     1
                 ),
                 array(
-                    'SELECT textval FROM const_table WHERE val = :val',
+                    'SELECT textval AS res FROM const_table WHERE val = :val',
                     array(':val' => 42),
                     'fetch',
                     'Universal answer'
-                ),
-                array(
-                    'SELECT textval FROM const_table WHERE val = :val AND id = :id',
-                    array(':val' => 1, ':id' => 2),
-                    'fetchColumn',
-                    'one'
                 )
             );
         }
@@ -109,7 +103,16 @@
          */
         public function testDynamicSelectValue($request, $bindParams, $fetchType, $expected)
         {
-            $result = $this->db->execQuery($request, $bindParams)($fetchType);
+            $result = $this->db->execQuery($request, $bindParams)($fetchType)->res;
             $this->assertEquals($expected, $result);
+        }
+
+        public function testManualFetchColumn()
+        {
+            $result = $this->db->execQuery(
+                'SELECT textval FROM const_table WHERE val = :val',
+                array(':val' => 2)
+            )('fetchColumn');
+            $this->assertEquals('Two', $result);
         }
     }
