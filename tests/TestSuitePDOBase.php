@@ -11,8 +11,7 @@
 
         public function tearDown()
         {
-            $this->db->execQuery('DROP TABLE IF EXISTS test_table');
-            $this->db = null;
+            $this->db->execQuery('TRUNCATE TABLE test_table');
         }
 
         public function testCreatePDO()
@@ -38,25 +37,17 @@
         public function insertQueryProvider()
         {
             return array(
-                array(
-                    'INSERT INTO test_table (val) VALUES (:val)',
-                    array(':val' => 'test value 1'),
-                    1
-                ),
-                array(
-                    'INSERT INTO test_table (val) VALUES (:val)',
-                    array(':val' => 'test value 2'),
-                    2
-                )                
+                array('INSERT INTO test_table (val) VALUES ("test value 1")'),
+                array('INSERT INTO test_table (val) VALUES ("Test value 2")')            
             );
         }
 
         /**
         * @dataProvider insertQueryProvider
         */
-        public function testInsertValue($request, $bindParams, $expected)
+        public function testDynamicInsertValue($request)
         {
-            $result = $this->db->execQuery($request, $bindParams)('lastInsertId');
-            $this->assertEquals($expected, $result);
+            $result = $this->db->execQuery($request);
+            $this->assertEquals(1, $result);
         }
     }
