@@ -56,6 +56,36 @@
             );
         }
 
+        public function selectQueryProvider()
+        {
+            return array(
+                array(
+                    'SELECT COUNT(id) FROM const_table',
+                    array(),
+                    'fetch',
+                    6
+                ),
+                array(
+                    'SELECT val FROM const_table WHERE id = :id',
+                    array(':id' => 3),
+                    'fetch',
+                    1
+                ),
+                array(
+                    'SELECT textval FROM const_table WHERE val = :val',
+                    array(':val' => 42),
+                    'fetch',
+                    'Universal answer'
+                ),
+                array(
+                    'SELECT textval FROM const_table WHERE val = :val AND id = :id',
+                    array(':val' => 1, ':id' => 2)
+                    'fetchColumn',
+                    'one'
+                )
+            )
+        }
+
         /**
         * @dataProvider insertQueryProvider
         */
@@ -72,5 +102,14 @@
         {
             $result = $this->db->execQuery($request, $bindParams);
             $this->assertEquals(1, $result);
+        }
+
+        /**
+         * @dataProvider selectQueryProvider
+         */
+        public function testDynamicSelectValue($request, $bindParams, $fetchType, $expected)
+        {
+            $result = $this->db->execQuery($request, $bindParams)($fetchType);
+            $this->assertEquals($expected, $result);
         }
     }
