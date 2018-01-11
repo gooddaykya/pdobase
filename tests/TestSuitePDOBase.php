@@ -42,12 +42,35 @@
             );
         }
 
+        public function insertBindQueryProvider()
+        {
+            return array(
+                array(
+                    'INSERT INTO test_table (val) VALUES (:val)',
+                    array(':val' => 'Test value 1')
+                ),
+                array(
+                    'INSERT INTO test_table (val) VALUES (:val)',
+                    array(':val' => 42)      
+                )
+            );
+        }
+
         /**
         * @dataProvider insertQueryProvider
         */
         public function testDynamicInsertValue($request)
         {
             $result = $this->db->execQuery($request);
+            $this->assertEquals(1, $result);
+        }
+
+        /**
+         * @dataProvider insertBindQueryProvider
+         */
+        public function testDynamicInsertBindedeValue($request, $bindParams)
+        {
+            $result = $this->db->execQuery($request, $bindParams);
             $this->assertEquals(1, $result);
         }
     }
