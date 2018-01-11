@@ -26,4 +26,13 @@
                 throw $e;
             }
         }
+
+        public function execQuery($request)
+        {
+            $stmt = $this->db->prepare($request);
+            $stmt->execute();
+            $lastInsertId = $this->db->lastInsertId();
+
+            return $lastInsertId;
+        }
     }
