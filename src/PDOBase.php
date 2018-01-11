@@ -27,12 +27,24 @@
             }
         }
 
-        public function execQuery($request)
+        public function execQuery($request, array $bindParams = array())
         {
             $stmt = $this->db->prepare($request);
+            array_walk($bindParams, $this->bindParam($stmt));
             $stmt->execute();
+
             $lastInsertId = $this->db->lastInsertId();
 
             return $lastInsertId;
+        }
+
+        private function bindParam($stmt)
+        {
+            return function($value, $placeholder) use($stmt)
+            {
+                $pdoType = is_int($value) ? \PDO::PARAM_INT : 
+                    (is_bool($value) ? \PDO::PARAM_BOOL : \PDO::PARAM_STR);
+                $stmt->bindValue($placeholder, $value, $pdoType);
+            };
         }
     }
