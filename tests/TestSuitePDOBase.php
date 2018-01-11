@@ -91,7 +91,7 @@
         */
         public function testDynamicInsertValue($request)
         {
-            $result = $this->db->execQuery($request);
+            $result = $this->db->execQuery($request)('lastInsertId');
             $this->assertEquals(1, $result);
         }
 
@@ -100,7 +100,7 @@
          */
         public function testDynamicInsertBindedeValue($request, $bindParams)
         {
-            $result = $this->db->execQuery($request, $bindParams);
+            $result = $this->db->execQuery($request, $bindParams)('lastInsertId');
             $this->assertEquals(1, $result);
         }
 
