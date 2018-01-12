@@ -72,10 +72,9 @@ Two reasons for this:
 ### Testing
 ##### Testing tables
 
-|const_table| --- | --- |
+|const_table|||
 | --- | --- | --- |
-|id: unsigned int, not null, primary, AI|val: unsigned int, not null|textval: varchar(20)|
-| --- | --- | --- |
+|**id**: unsigned int, not null, primary, AI|**val**: unsigned int, not null|**textval**: varchar(20)|
 |1|0| |
 |2|1|one|
 |3|1|One|
@@ -83,18 +82,18 @@ Two reasons for this:
 |5|13|Trirteen|
 |6|42|Universal answer|
 
-|main_table| --- |
-| | |
-|id: unsigned int, not null, primary, AI|val: unsigned int, not null|
+
+|main_table||
 | --- | --- |
+|**id**: unsigned int, not null, primary, AI|**val**: unsigned int, not null|
 
 |dep_table|foreign key(main_table.id)|
-| | |
-|id: unsigned int, not null, primary|val: unsigned int, not null|
 | --- | --- |
+|**id**: unsigned int, not null, primary|**val**: unsigned int, not null|
+
 ---
 ### ToDo List
-[ ] separate current test cases into *transaction* and *non transaction* suites.
-[ ] use PHPUnit with database to retrieve expected results.
+[ ] separate current test cases into transaction and non transaction suites.
+[ ] retrieve expected results directly from database.
 ---
 ### EOF
