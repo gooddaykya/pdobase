@@ -72,26 +72,26 @@ Two reasons for this:
 ### Testing
 ##### Testing tables
 
-|const_table|---|---|
-|---|---|---|
+|const_table| --- | --- |
+| --- | --- | --- |
 |id: unsigned int, not null, primary, AI|val: unsigned int, not null|textval: varchar(20)|
-|---|---|---|
-|1|0|---|
+| --- | --- | --- |
+|1|0| --- |
 |2|1|one|
 |3|1|One|
 |4|2|Two|
 |5|13|Trirteen|
 |6|42|Universal answer|
 
-|main_table|---|
-|---|---|
+|main_table| --- |
+| --- | --- |
 |id: unsigned int, not null, primary, AI|val: unsigned int, not null|
-|---|---|
+| --- | --- |
 
 |dep_table|foreign key(main_table.id)|
-|---|---|
+| --- | --- |
 |id: unsigned int, not null, primary|val: unsigned int, not null|
-|---|---|
+| --- | --- |
 ---
 ### ToDo List
 1. refactor current test suite
