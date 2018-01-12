@@ -115,4 +115,31 @@
             )('fetchColumn');
             $this->assertEquals('Two', $result);
         }
+
+        public function testManualTransactionSuccess()
+        {
+            $request1 = 'insert into main_table (val) values (:val)';
+            $request2 = 'insert into dep_table (id, val) values (:id, :val)';
+
+            $this->db->beginTransaction();
+        
+            $primaryId = $this->db->execQuery(
+                $request1,
+                array(
+                    ':val' => 15
+                )
+            )('lastInsertId');
+    
+            $result = $this->db->execQuery(
+                $request2,
+                array(
+                    ':id' => $primaryId,
+                    ':val' => 1
+                )
+            )('rowCount');
+    
+            $db->commit();
+
+            $this->assertEquals(1, $result);
+        }
     }
