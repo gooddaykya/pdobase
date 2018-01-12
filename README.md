@@ -72,7 +72,7 @@ Two reasons for this:
 ### Testing
 ##### Testing tables
 
-|const_table| --- | --- |
+|const_table|| --- |
 | --- | --- | --- |
 |id: unsigned int, not null, primary, AI|val: unsigned int, not null|textval: varchar(20)|
 | --- | --- | --- |
