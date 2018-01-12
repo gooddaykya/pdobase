@@ -7,7 +7,7 @@
 ### What it is?
 
 **PDOBase** is a lightweight and easy-to-config wrapper for PDO. It hides most of routine under 
-boiler plate, thus a developer can focus on *what* should be done instead of *how* it should be done.
+boilerplate, thus a developer can focus on *what* should be done instead of *how* it should be done.
 
 ### What it is not?
 **PDOBase** is not a query builder and doesn't include one. 
