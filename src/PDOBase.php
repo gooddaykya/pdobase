@@ -42,6 +42,21 @@
             };
         }
 
+        public function beginTransaction()
+        {
+            $this->db->beginTransaction();
+        }
+
+        public function commit()
+        {
+            $this->db->commit();
+        }
+
+        public function rollback()
+        {
+            $this->db->rollback();
+        }
+
         private function bindParam($stmt)
         {
             return function($value, $placeholder) use($stmt)
