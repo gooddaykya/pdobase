@@ -14,7 +14,7 @@ boilerplate, thus a developer can focus on *what* should be done instead of *how
 
 Two reasons for this:
 1. Supporting every SQL feature will add complexity to existing class.
-2. Query builder, separated from specific database adaptor, becomes reusabe with anoter adaptors, that use SQL.
+2. Query builder, separated from specific database adaptor, becomes reusabe with another adaptors, that use SQL.
 ---
 ### Basic usage
 ##### Instantiating
