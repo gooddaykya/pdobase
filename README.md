@@ -93,7 +93,10 @@ Two reasons for this:
 
 ---
 ### ToDo List
+
 [ ] separate current test cases into transaction and non transaction suites.
+
 [ ] retrieve expected results directly from database.
+
 ---
 ### EOF
