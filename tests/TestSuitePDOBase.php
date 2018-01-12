@@ -80,6 +80,18 @@
             );
         }
 
+        public function transactionProvider()
+        {
+            return array(
+                array(
+                    'insert into main_table (val) values (:val)',
+                    'lastInsertId',
+                    'insert into dep_table (id, val) values (:id, :val)',
+                    'rowCount'
+                )
+            );
+        }
+
         /**
         * @dataProvider insertQueryProvider
         */
@@ -116,30 +128,33 @@
             $this->assertEquals('Two', $result);
         }
 
-        public function testManualTransactionSuccess()
+        /**
+         * @dataProvider transactionProvider
+         */
+        public function testManualTransactionSuccess($request1, $fetch1, $request2, $fetch2)
         {
-            $request1 = 'insert into main_table (val) values (:val)';
-            $request2 = 'insert into dep_table (id, val) values (:id, :val)';
-
             $this->db->beginTransaction();
         
-            $primaryId = $this->db->execQuery(
-                $request1,
-                array(
-                    ':val' => 15
-                )
-            )('lastInsertId');
-    
-            $result = $this->db->execQuery(
-                $request2,
-                array(
-                    ':id' => $primaryId,
-                    ':val' => 1
-                )
-            )('rowCount');
-    
-            $db->commit();
+            $primaryId = $this->db->execQuery($request1, [':val' => 15])($fetch1);
+            $result = $this->db->execQuery($request2, [':id' => $primaryId, ':val' => 1])($fetch2);
+            
+            $this->db->commit();
 
             $this->assertEquals(1, $result);
+        }
+
+        /**
+         * @dataProvider transactionProvider
+         */
+        public function testManualTransactionFail($request1, $fetch1, $request2, $fetch2)
+        {
+            $this->expectException(\PDOException::class);
+
+            $this->db->beginTransaction();
+
+            $primaryId = $this->db->execQuery($request1, [':val' => 15])($fetch1);
+            $result = $this->db->execQuery($request2, [':id' => $primaryId + 1, ':val' => 1])($fetch2);
+
+            $this->db->commit();
         }
     }
