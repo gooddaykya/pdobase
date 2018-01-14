@@ -29,7 +29,13 @@ Two reasons for this:
         'password' => ''
     );
 
-    $db = new gooddaykya\components\PDOBase($requisites);
+    $db = new \gooddaykya\components\PDOBase($requisites);
+```
+Or, by passing array from external file
+```
+    require '../vendor/autoload.php';
+
+    $db = new \gooddaykya\components\PDOBase(require '../requisites.php');
 ```
 ##### Getting data from database
 ```
