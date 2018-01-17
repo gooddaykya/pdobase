@@ -31,7 +31,11 @@
         {
             $stmt = $this->db->prepare($request);
             array_walk($bindParams, $this->bindParam($stmt));
-            $stmt->execute();
+            try {
+                $stmt->execute();
+            } catch (\PDOException $e) {
+                throw $e;
+            }
 
             $lastInsertId = $this->db->lastInsertId();
 
