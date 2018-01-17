@@ -157,4 +157,11 @@
 
             $this->db->commit();
         }
+
+        public function testIncorrectSQLSyntax()
+        {
+            $this->expectException(\PDOException::class);
+            $request = 'SLECT * FROM const_base';
+            $result = $this->db->execQuery($request)('fetchAll');
+        }
     }
