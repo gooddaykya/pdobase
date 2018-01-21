@@ -41,12 +41,13 @@
 
             return function($fetchMethod) use($stmt, $lastInsertId)
             {
-                if (!method_exists($stmt, $fetchMethod)) {
+                if ($fetchMethod === 'lastInsertId') {
+                    return $lastInsertId;
+                } else if (method_exists($stmt, $fetchMethod)) {
+                    return $stmt->$fetchMethod();
+                } else {
                     throw new \PDOException('Calling undefined PDOStatement method');
                 }
-
-                return $fetchMethod === 'lastInsertId' ? 
-                    $lastInsertId : $stmt->$fetchMethod();
             };
         }
 
