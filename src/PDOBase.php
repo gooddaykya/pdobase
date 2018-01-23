@@ -31,14 +31,16 @@
         {
             $stmt = $this->db->prepare($request);
             array_walk($bindParams, $this->bindParam($stmt));
-            $stmt->execute();
 
-            $lastInsertId = $this->db->lastInsertId();
+            return function($fetchMethod) use($stmt) {
+                $stmt->execute();
+                if ($fetchMethod === 'lastInsertId')
+                    return $this->db->lastInsertId();
 
-            return function($fetchMethod) use($stmt, $lastInsertId)
-            {
-                return $fetchMethod === 'lastInsertId' ? 
-                    $lastInsertId : $stmt->$fetchMethod();
+                if (method_exists($stmt, $fetchMethod))
+                    return $stmt->$fetchMethod();
+                
+                throw new \PDOException('Call undefined PDOStatement method');
             };
         }
 
