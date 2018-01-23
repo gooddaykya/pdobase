@@ -11,7 +11,7 @@
 
         public function tearDown()
         {
-            $this->db->execQuery('TRUNCATE TABLE test_table');
+            $this->db->execQuery('TRUNCATE TABLE test_table')('lastInsertId');
         }
 
         public function testCreatePDO()
