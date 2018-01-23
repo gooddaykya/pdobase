@@ -92,6 +92,18 @@
             );
         }
 
+        public function lazyEvaluationRequestProvider()
+        {
+            return array(
+                array(
+                    'SELECT val AS res FROM const_table WHERE id = 2',
+                    'SELECT textval AS res FROM const_table WHERE id = 2',
+                    1,
+                    'one'                    
+                )
+                );
+        }
+
         /**
         * @dataProvider insertQueryProvider
         */
@@ -163,5 +175,27 @@
             $this->expectException(\PDOException::class);
             $request = 'SLECT * FROM const_base';
             $result = $this->db->execQuery($request)('fetchAll');
+        }
+
+        /**
+         * @dataProvider lazyEvaluationRequestProvider
+         */
+        public function testLazyEvaluationInterferenceRegularOrder($req_1, $req_2, $expect_1, $expect_2)
+        {
+            $res_1 = $this->db->execQuery($req_1);
+            $res_2 = $this->db->execQuery($req_2);
+            $this->assertEquals($expect_1, $res_1('fetch')->res);
+            $this->assertEquals($expect_2, $res_2('fetch')->res);
+        }
+
+        /**
+         * @dataProvider lazyEvaluationRequestProvider
+         */
+        public function testLazyEvaluationInterferenceReverseOrder($req_1, $req_2, $expect_1, $expect_2)
+        {
+            $res_1 = $this->db->execQuery($req_1);
+            $res_2 = $this->db->execQuery($req_2);
+            $this->assertEquals($expect_2, $res_2('fetch')->res);
+            $this->assertEquals($expect_1, $res_1('fetch')->res);
         }
     }
