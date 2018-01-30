@@ -1,6 +1,8 @@
 # PDOBase
+[![Latest Stable Version](https://poser.pugx.org/gooddaykya/pdobase/v/stable)](https://packagist.org/packages/gooddaykya/pdobase) [![Total Downloads](https://poser.pugx.org/gooddaykya/pdobase/downloads)](https://packagist.org/packages/gooddaykya/pdobase) [![License](https://poser.pugx.org/gooddaykya/pdobase/license)](https://packagist.org/packages/gooddaykya/pdobase)
 
 ### Wrapper for PDO
+
 ---
 ## Description
 
