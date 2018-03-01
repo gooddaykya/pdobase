@@ -27,4 +27,16 @@
             $this->assertEquals(13, $result);
             $this->assertFalse($result != 13);
         }
+
+        public function testNonUndefinedPDOStatement()
+        {
+            $request = 'SELECT val FROM const_table WHERE id = :id';
+            $params = array(
+                ':id' => 5
+            );
+
+            $lazy = self::$db->execQuery($request, $params);
+            $this->expectException(\PDOException::class);
+            $lazy('undefined_method');
+        }
     }
