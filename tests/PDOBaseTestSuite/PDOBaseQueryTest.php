@@ -45,4 +45,22 @@
             $lazy = self::$db->execQuery($request);
             $result = $lazy('fetchAll');
         }
+
+        public function testCorrectTransaction()
+        {
+            $request1 = 'INSERT INTO main_table (val) VALUES (15)';
+            $request2 = 'INSERT INTO dep_table (id, val) VALUES (LAST_INSERT_ID(), 1)';
+
+            self::$db->beginTransaction();
+
+            $lazy1 = self::$db->execQuery($request1);
+            $result1 = $lazy1('lastInsertId');
+
+            $lazy2 = self::$db->execQuery($request2);
+            $result = $lazy2('rowCount');
+
+            self::$db->commit();
+
+            $this->assertEquals(1, $result);
+        }
     }
