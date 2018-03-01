@@ -30,12 +30,9 @@
 
         public function testUndefinedPdoStatement()
         {
-            $request = 'SELECT val FROM const_table WHERE id = :id';
-            $params = array(
-                ':id' => 5
-            );
+            $request = 'SELECT * FROM const_table';
 
-            $lazy = self::$db->execQuery($request, $params);
+            $lazy = self::$db->execQuery($request);
             $this->expectException(\PDOException::class);
             $lazy('undefined_method');
         }
