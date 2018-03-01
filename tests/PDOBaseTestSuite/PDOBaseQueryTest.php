@@ -28,7 +28,7 @@
             $this->assertFalse($result != 13);
         }
 
-        public function testNonUndefinedPDOStatement()
+        public function testUndefinedPDOStatement()
         {
             $request = 'SELECT val FROM const_table WHERE id = :id';
             $params = array(
