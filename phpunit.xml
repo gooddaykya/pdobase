@@ -1,0 +1,14 @@
+<phpunit bootstrap="tests/phpunit.php">
+    <testsuite name="PDOBase tests">
+        <directory>
+            tests/PDOBaseTestSuite
+        </directory>
+    </testsuite>
+    <filter>
+        <whitelist>
+            <directory>
+                src/
+            </directory>
+        </whitelist>
+    </filter>
+</phpunit>
