@@ -6,12 +6,12 @@
 
     class PDOBaseQueryTest extends \PHPUnit\Framework\TestCase
     {
-        private static $db = null;
+        private static $db;
 
         public static function setUpBeforeClass()
         {
-            $requisites = require __DIR__ . './../../credentials.php';
-            self::$db = new PDOBase($requisites);
+            $credentials = require __DIR__ . './../../credentials.php';
+            self::$db = new PDOBase($credentials);
         }
 
         public function testSelectRowByIdFromTable()
@@ -28,7 +28,7 @@
             $this->assertFalse($result != 13);
         }
 
-        public function testUndefinedPDOStatement()
+        public function testUndefinedPdoStatement()
         {
             $request = 'SELECT val FROM const_table WHERE id = :id';
             $params = array(
@@ -38,5 +38,14 @@
             $lazy = self::$db->execQuery($request, $params);
             $this->expectException(\PDOException::class);
             $lazy('undefined_method');
+        }
+
+        public function testIncorrectSqlSyntax()
+        {
+            $request = 'S_LECT * FROM const_table';
+            
+            $this->expectException(\PDOException::class);
+            $lazy = self::$db->execQuery($request);
+            $result = $lazy('fetchAll');
         }
     }
