@@ -49,18 +49,53 @@
         public function testCorrectTransaction()
         {
             $request1 = 'INSERT INTO main_table (val) VALUES (15)';
-            $request2 = 'INSERT INTO dep_table (id, val) VALUES (LAST_INSERT_ID(), 1)';
+            $request2 = 'INSERT INTO dep_table (id, val) VALUES (LAST_INSERT_ID(), LAST_INSERT_ID())';
 
             self::$db->beginTransaction();
 
             $lazy1 = self::$db->execQuery($request1);
-            $result1 = $lazy1('lastInsertId');
+            $mainId = $lazy1('lastInsertId');
 
             $lazy2 = self::$db->execQuery($request2);
-            $result = $lazy2('rowCount');
+            $depRowsAffected = $lazy2('rowCount');
 
             self::$db->commit();
 
-            $this->assertEquals(1, $result);
+
+            $check = 'SELECT val FROM dep_table WHERE id = :id';
+            $params = array(
+                'id' => $mainId
+            );
+
+            $lazyCheck = self::$db->execQuery($check, $params);
+            $checkInsertedValue = $lazyCheck('fetch')->val;
+
+            $this->assertEquals(1, $depRowsAffected);
+            $this->assertEquals($mainId, $checkInsertedValue);
+        }
+
+        public function testFailedTransactionRollback()
+        {
+            $wrongRequest = 'INSERT INTO main_table (va_) VALUES (15)';
+            $dependentRequest = 'INSERT INTO dep_table (id, val) VALUES (LAST_INSERT_ID(), 1)';
+            $result = null;
+
+            try {
+                
+                self::$db->beginTransaction();
+                
+                $lazyWrong = self::$db->execQuery($wrongRequest);
+                $resultWrong = $lazyWrong('lastInsertId');
+
+                $lazy = self::$db->execQuery($dependentRequest);
+                $result = $lazy('rowCount');
+                
+                self::$db->commit();
+            } catch (\PDOException $e) {
+                self::$db->rollback();
+            } finally {
+            
+                $this->assertNull($result);
+            }
         }
     }
