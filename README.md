@@ -8,11 +8,11 @@
 
 ### What it is?
 
-**PDOBase** is a lightweight and easy-to-config wrapper for PDO. It hides most of routine under 
+**PDOBase** is a lightweight and easy-to-config wrapper for PDO. It hides most of routine under
 boilerplate, thus a developer can focus on *what* should be done instead of *how* it should be done.
 
 ### What it is not?
-**PDOBase** is not a query builder and doesn't include one. 
+**PDOBase** is not a query builder and doesn't include one.
 
 Two reasons for this:
 1. Supporting every SQL feature will add complexity to existing class.
@@ -26,8 +26,8 @@ Two reasons for this:
     $requisites = array(
         'host' => 'localhost',
         'user' => 'root',
-        'char' => 'utf8',
-        'dbname' => 'test_base',
+        'charset' => 'utf8',
+        'dbname'  => 'test_base',
         'password' => ''
     );
 
@@ -49,7 +49,7 @@ Or, by passing array from external file
     $bindParams = array(
         ':id' => 1
     );
-    
+
     $result = $db->execQuery($request, $bindParams)('fetch');
 ```
 ##### ACID example
@@ -62,7 +62,7 @@ Or, by passing array from external file
         $insertedId = $db->execQuery($primeRequest,
             array(':val' => 'Independent value')
         )('lastInsertId');
-        
+
         $result = $db->execQuery(
             $dependentReq,
             array(
@@ -70,7 +70,7 @@ Or, by passing array from external file
                 ':val' => 'Dependent value'
             )
         )('rowCount');
-        
+
         $db->commit();
     } catch (\PDOException $e) {
         $db->rollback();
