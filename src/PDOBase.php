@@ -11,10 +11,10 @@
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
                 \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ
             );
-            $dsn = 
+            $dsn =
                 'mysql:host=' . $credentials['host'] . ';' .
                 'dbname='     . $credentials['dbname'] . ';' .
-                'char='       . $credentials['char'];
+                'charset='    . $credentials['charset'];
             try {
                 $this->db = new \PDO(
                     $dsn,
@@ -39,7 +39,7 @@
 
                 if (method_exists($stmt, $fetchMethod))
                     return $stmt->$fetchMethod();
-                
+
                 throw new \PDOException('Call undefined PDOStatement method');
             };
         }
@@ -63,7 +63,7 @@
         {
             return function($value, $placeholder) use($stmt)
             {
-                $pdoType = is_int($value) ? \PDO::PARAM_INT : 
+                $pdoType = is_int($value) ? \PDO::PARAM_INT :
                     (is_bool($value) ? \PDO::PARAM_BOOL : \PDO::PARAM_STR);
                 $stmt->bindValue($placeholder, $value, $pdoType);
             };
